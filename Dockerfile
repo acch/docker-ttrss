@@ -6,11 +6,12 @@ ARG DEBIAN_FRONTEND=noninteractive
 RUN apt-get -qq update \
 && apt-get -qqy install \
    libfreetype6-dev \
+   libicu-dev \
    libjpeg-dev \
    libpng-dev \
    supervisor \
 && rm -rf /var/lib/apt/lists/* \
-&& docker-php-ext-install mysqli pdo_mysql \
+&& docker-php-ext-install intl mysqli pdo_mysql \
 && docker-php-ext-configure gd --with-jpeg-dir=/usr/include/ --with-png-dir=/usr/include/ --with-freetype-dir=/usr/include/ \
 && docker-php-ext-install gd
 
