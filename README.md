@@ -1,3 +1,9 @@
+# Deprecated
+
+I've switched to the [cthulhoo/ttrss-fpm-pgsql-static](https://hub.docker.com/r/cthulhoo/ttrss-fpm-pgsql-static) image, and hence will not be maintaining this image going forward. Refer to the [docker-compose](https://git.tt-rss.org/fox/ttrss-docker-compose/src/branch/static-dockerhub/README.md) example for further details.
+
+# Original README below
+
 # docker-ttrss
 
 [![GitHub Issues](https://img.shields.io/github/issues/acch/docker-ttrss.svg)](https://github.com/acch/docker-ttrss/issues) [![GitHub Stars](https://img.shields.io/github/stars/acch/docker-ttrss.svg?label=github%20%E2%98%85)](https://github.com/acch/docker-ttrss/) [![Docker Pulls](https://img.shields.io/docker/pulls/acch/ttrss.svg)](https://hub.docker.com/r/acch/ttrss/) [![License](https://img.shields.io/github/license/acch/docker-ttrss.svg)](LICENSE)
