@@ -8,47 +8,43 @@
 
 Tiny Tiny RSS requires a database to run. The recommended way of starting both containers is with [Docker-Compose](https://docs.docker.com/compose/compose-file):
 
-```
-version: '3'
+    version: '3'
 
-services:
-  db:
-    image: mariadb
-    container_name: ttrss_db
+    services:
+      db:
+        image: mariadb
+        container_name: ttrss_db
+        volumes:
+          - db:/var/lib/mysql
+        environment:
+          - MYSQL_RANDOM_ROOT_PASSWORD=yes
+        env_file:
+          - db.env
+        restart: always
+
+      app:
+        image: acch/ttrss
+        container_name: ttrss_app
+        environment:
+          - MYSQL_HOST=db
+          - VIRTUAL_HOST=ttrss.mydomain.com
+          - SMTP_SERVER=mail.mydomain.com:25
+          - SMTP_FROM_ADDRESS=rss@mydomain.com
+        env_file:
+          - db.env
+        depends_on:
+          - db
+        restart: always
+
     volumes:
-      - db:/var/lib/mysql
-    environment:
-      - MYSQL_RANDOM_ROOT_PASSWORD=yes
-    env_file:
-      - db.env
-    restart: always
-
-  app:
-    image: acch/ttrss
-    container_name: ttrss_app
-    environment:
-      - MYSQL_HOST=db
-      - VIRTUAL_HOST=ttrss.mydomain.com
-      - SMTP_SERVER=mail.mydomain.com:25
-      - SMTP_FROM_ADDRESS=rss@mydomain.com
-    env_file:
-      - db.env
-    depends_on:
-      - db
-    restart: always
-
-volumes:
-  db:
-    driver: local
-```
+      db:
+        driver: local
 
 The file `db.env` contains (secret) database credentials:
 
-```
-MYSQL_DATABASE=ttrss
-MYSQL_USER=ttrss
-MYSQL_PASSWORD=<mysecretpassword>
-```
+    MYSQL_DATABASE=ttrss
+    MYSQL_USER=ttrss
+    MYSQL_PASSWORD=<mysecretpassword>
 
 ## Getting Started
 
@@ -60,16 +56,16 @@ See `https://git.tt-rss.org/fox/tt-rss/wiki/InstallationNotes` for details. Note
 
 The following environment variables are used to generate the `config.php` configuration file:
 
-Docker Environment Variable | TT-RSS Configuration Option
----|---
-MYSQL_HOST | `DB_HOST`
-MYSQL_USER | `DB_USER`
-MYSQL_DATABASE | `DB_NAME`
-MYSQL_PASS | `DB_PASS`
-VIRTUAL_HOST | `SELF_URL_PATH`
-SMTP_SERVER | `SMTP_SERVER`
-SMTP_FROM_NAME | `SMTP_FROM_NAME`
-SMTP_FROM_ADDRESS | `SMTP_FROM_ADDRESS`
+| Docker Environment Variable | TT-RSS Configuration Option |
+| --------------------------- | --------------------------- |
+| MYSQL_HOST                  | `DB_HOST`                   |
+| MYSQL_USER                  | `DB_USER`                   |
+| MYSQL_DATABASE              | `DB_NAME`                   |
+| MYSQL_PASS                  | `DB_PASS`                   |
+| VIRTUAL_HOST                | `SELF_URL_PATH`             |
+| SMTP_SERVER                 | `SMTP_SERVER`               |
+| SMTP_FROM_NAME              | `SMTP_FROM_NAME`            |
+| SMTP_FROM_ADDRESS           | `SMTP_FROM_ADDRESS`         |
 
 Refer to [config.php](https://git.tt-rss.org/fox/tt-rss/src/master/config.php-dist) for a detailed explanation of these configuration options.
 
