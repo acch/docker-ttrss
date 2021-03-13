@@ -1,10 +1,9 @@
 FROM php:7-apache-stretch
-MAINTAINER Achim Christ
 
 # Install prerequisites
 ARG DEBIAN_FRONTEND=noninteractive
 RUN apt-get -qq update \
-&& apt-get -qqy install \
+&& apt-get -qqy --no-install-recommends install \
    libfreetype6-dev \
    libicu-dev \
    libjpeg-dev \
@@ -33,6 +32,7 @@ ENV SMTP_FROM_ADDRESS noreply@your.domain.dom
 COPY config.sh /var/www/html
 
 # Install Tiny Tiny RSS and SMTP mailer plugin
+SHELL ["/bin/bash", "-o", "pipefail", "-c"]
 RUN curl -sSL https://git.tt-rss.org/fox/tt-rss/archive/master.tar.gz | tar xz -C /var/www/html --strip-components 1 \
 && mkdir /var/www/html/plugins.local/mailer_smtp \
 && curl -sSL https://git.tt-rss.org/fox/ttrss-mailer-smtp/archive/master.tar.gz | tar xz -C /var/www/html/plugins.local/mailer_smtp --strip-components 1 \
